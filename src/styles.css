@@ -1,4 +1,101 @@
 /* styles.css */
+
+
+:root {
+  --primary-dark: #333;
+  --secondary-dark: #444;
+  --primary-light: #eee;
+  --secondary-light: #ddd;
+}
+
+
+* {
+  box-sizing:  border-box;
+  padding: 0;
+  margin: 0;
+}
 body {
-  background-color: rebeccapurple;
+  background-color: var(--primary-light);
+}
+header {
+  color: white;
+  background-color: var(--primary-dark);
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1,h2 {
+  display: block;
+  font-weight: bold;;
+
+}
+
+h1 {
+  font-size: 2em;
+}
+button, input {
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
+button {
+  width:  100%;
+  padding: 10px 20px;
+  border-radius:  5px;
+  cursor: pointer;
+  text-align: left;
+}
+
+
+#content {
+  display: flex;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-light);
+  padding: 20px;
+  width: 300px;
+  min-width: 250px;
+
+}
+.projects-title {
+  padding: 10px;
+  margin-top: 10px;
+}
+
+
+.project-btn, .add-project-btn{
+  background-color: var(--secondary-light);
+}
+
+.projectPreview {
+  width: 900px;
+  padding: 20px 40px;
+  margin: 0 auto;
+}
+
+.projectName {
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+
+.add-task-btn {
+  display: block;
+  padding-left: 15px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+
+.defaultList {
+  display: flex;
+  flex-direction: column;
 }
