@@ -10,6 +10,10 @@ export default class Project {
         this.name = name;
     }
 
+    addTask(task) {
+        this.tasks.push(task);
+    }
+
 
     // Getter Methods
 

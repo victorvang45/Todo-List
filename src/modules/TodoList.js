@@ -7,6 +7,9 @@ export default class TodoList {
     }
 
     addProject(project) {
+        if(this.activeProject == null) {
+            this.activeProject = project;
+        }
         this.projects.push(project)
     }
 
