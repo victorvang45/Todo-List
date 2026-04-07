@@ -86,7 +86,7 @@ const UI = (() => {
         projectTitle.textContent = "Projects";
         navBar.appendChild(projectTitle);
 
-        
+
         navBar.appendChild(renderProjects());
 
 
@@ -131,11 +131,12 @@ const UI = (() => {
         const projectLists = document.createElement('div');
         projectLists.classList.add('projectlist');
 
-        todoList.projects.slice(3).forEach (project => {
+        todoList.projects.slice(3).forEach(project => {
             const projects = document.createElement("button");
             projects.classList.add('project-btn');
 
             projects.textContent = project.name;
+            attachListenerProject(projects);
 
             projectLists.appendChild(projects);
         });
@@ -336,6 +337,8 @@ const UI = (() => {
         const taskForm = document.querySelector('#taskForm');
         const projectForm = document.querySelector('#projectForm');
 
+
+
         // Add Projects Button
         document.querySelector('.add-project-btn').addEventListener('click', () => {
             console.log("Add Project clicked");
@@ -393,7 +396,36 @@ const UI = (() => {
             modalAddProjectContainer.style.display = 'none';
         })
 
+        const projectButtons = document.querySelectorAll('.project-btn');
+        projectButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                console.log('Project clicked:', button.textContent);
 
+                // Set active project
+                todoList.activeProject = todoList.projects.find(
+                    p => p.name === button.textContent
+                );
+
+                // Re-render tasks for the new active project
+                refreshTasks();
+            });
+        })
+
+
+    }
+
+    function attachListenerProject(button) {
+        button.addEventListener('click', () => {
+            console.log("Project clicked:", button.textContent);
+
+            // Set active project
+            todoList.activeProject = todoList.projects.find(
+                p => p.name === button.textContent
+            );
+
+            // Re-render tasks for the new active project
+            refreshTasks();
+        })
     }
 
     const refreshTasks = () => {
