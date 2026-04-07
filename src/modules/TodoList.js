@@ -7,13 +7,13 @@ export default class TodoList {
     }
 
     addProject(project) {
-        if(this.activeProject == null) {
+        if (this.activeProject == null) {
             this.activeProject = project;
         }
         this.projects.push(project)
     }
 
-    getActiveProject(){
+    getActiveProject() {
         return this.activeProject;
     }
 
@@ -23,10 +23,14 @@ export default class TodoList {
     }
 
 
-    /*
-    - removeProject()
-    - getProjectById()
-    */
+    deleteProject(projectToDelete) {
+        this.projects = this.projects.filter(project => project !== projectToDelete);
+
+        // If the deleted project was active, pick a new active project
+        if (this.activeProject === projectToDelete) {
+            this.activeProject = this.projects.length > 0 ? this.projects[0] : null;
+        }
+    }
 
 
 }

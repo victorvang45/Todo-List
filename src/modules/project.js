@@ -11,7 +11,14 @@ export default class Project {
     }
 
     addTask(task) {
+        // Check for duplicate title
+        const exists = this.tasks.some(t => t.title === task.title);
+        if (exists) {
+            alert(`Task with name "${task.title}" already exists!`);
+            return false; // Or throw an error
+        }
         this.tasks.push(task);
+        return true;
     }
 
 
@@ -24,4 +31,8 @@ export default class Project {
     getTasks() {
         return this.tasks;
     }
+
+    deleteTaskByName(name) {
+    this.tasks = this.tasks.filter(task => task.title !== name);
+}
 }

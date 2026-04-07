@@ -164,7 +164,8 @@ label {
   max-width: 100%;
 }
 
-.modal-container, .project-modal-container {
+.modal-container,
+.project-modal-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -209,17 +210,58 @@ form {
 
 
 .submit-btn-container button {
-    color:white;
-    padding: 12px 40px;
-    border: none;
-    box-shadow: 0.5px 2px 3px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    font-size: 17px;
-  
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  box-shadow: 0.5px 2px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-size: 17px;
+
 }
 
 .submit-btn {
-  
+
   transition: background-color 0.3s ease;
   background-color: rgba(41, 167, 89, 1);
+}
+
+.project-btn.active {
+  background-color: #4caf50;
+  /* Green highlight */
+  color: white;
+  font-weight: bold;
+}
+
+
+.project-btn {
+  display: flex;
+  justify-content: space-between;
+  /* text left, X right */
+  align-items: center;
+  padding: 10px;
+  min-width: 120px;
+  /* optional: prevent button from collapsing too small */
+  overflow: hidden;
+  /* keeps text/X inside button */
+  position: relative;
+  /* only needed if using absolute children */
+}
+
+.project-btn .delete-x {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
+  font-size: 30px;
+  /* Bigger text */
+  line-height: 1;
+  /* Makes vertical centering cleaner */
+}
+
+.project-btn:hover .delete-x {
+  display: inline;
 }

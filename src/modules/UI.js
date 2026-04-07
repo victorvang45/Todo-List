@@ -66,6 +66,7 @@ const UI = (() => {
         // Default List of Projects
         const inboxProjects = document.createElement("button");
         inboxProjects.classList.add('project-btn');
+        inboxProjects.classList.add('active');
         inboxProjects.textContent = "Inbox";
 
         const todayProjects = document.createElement("button");
@@ -133,9 +134,24 @@ const UI = (() => {
 
         todoList.projects.slice(3).forEach(project => {
             const projects = document.createElement("button");
+            projects.textContent = project.name;
             projects.classList.add('project-btn');
 
-            projects.textContent = project.name;
+            // Add delete feature to projects
+
+            const deleteX = document.createElement('span');
+            deleteX.textContent = '×';
+            deleteX.classList.add('delete-x');
+
+            deleteX.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent selecting the project
+                todoList.deleteProject(project);
+                refreshProjects(); // Re-render project list
+            });
+
+            projects.appendChild(deleteX);
+
+            
             attachListenerProject(projects);
 
             projectLists.appendChild(projects);
@@ -184,10 +200,12 @@ const UI = (() => {
             // Edit Button
             const editButton = document.createElement('button');
             editButton.textContent = "Edit";
+            editButton.classList.add('edit-btn');
 
             // Delete
             const deleteButton = document.createElement('button');
             deleteButton.textContent = "Delete";
+            deleteButton.classList.add('delete-btn');
 
 
             const date = document.createElement('p');
@@ -197,8 +215,14 @@ const UI = (() => {
 
             leftPanel.appendChild(checkbox);
             leftPanel.appendChild(label);
+
+            attachEditListener(editButton);
+            attachDeleteListener(deleteButton)
             rightPanel.appendChild(editButton);
+
+
             rightPanel.appendChild(deleteButton);
+
             rightPanel.appendChild(date);
 
             taskDiv.appendChild(leftPanel);
@@ -336,7 +360,14 @@ const UI = (() => {
         const modalAddProjectContainer = document.querySelector('.project-modal-container');
         const taskForm = document.querySelector('#taskForm');
         const projectForm = document.querySelector('#projectForm');
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        const editButtons = document.querySelectorAll('.edit-btn');
+        const projectButtons = document.querySelectorAll('.project-btn');
 
+
+        projectButtons.forEach(button => {
+            attachListenerProject(button);
+        })
 
 
         // Add Projects Button
@@ -371,9 +402,9 @@ const UI = (() => {
             );
 
 
-            inbox.addTask(task);
+            todoList.activeProject.addTask(task);
             console.log("test:" + formData);
-            console.log(inbox);
+            console.log(todoList.activeProject);
             refreshTasks();
             modalAddTaskContainer.style.display = 'none';
         })
@@ -396,37 +427,10 @@ const UI = (() => {
             modalAddProjectContainer.style.display = 'none';
         })
 
-        const projectButtons = document.querySelectorAll('.project-btn');
-        projectButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                console.log('Project clicked:', button.textContent);
-
-                // Set active project
-                todoList.activeProject = todoList.projects.find(
-                    p => p.name === button.textContent
-                );
-
-                // Re-render tasks for the new active project
-                refreshTasks();
-            });
-        })
-
 
     }
 
-    function attachListenerProject(button) {
-        button.addEventListener('click', () => {
-            console.log("Project clicked:", button.textContent);
 
-            // Set active project
-            todoList.activeProject = todoList.projects.find(
-                p => p.name === button.textContent
-            );
-
-            // Re-render tasks for the new active project
-            refreshTasks();
-        })
-    }
 
     const refreshTasks = () => {
         const oldList = document.querySelector('.tasklist');
@@ -454,6 +458,59 @@ const UI = (() => {
 
         attachListeners();
     };
+
+    // Helper Methods
+
+    function attachEditListener(button) {
+        button.addEventListener('click', () => {
+            console.log("Edit clicked");
+
+
+            // Re-render tasks for the new active project
+            //refreshTasks();
+        })
+    }
+
+
+    function attachDeleteListener(button) {
+        button.addEventListener('click', (e) => {
+
+
+            const taskDiv = e.target.closest('.task-div');
+            const taskName = taskDiv.querySelector('label').textContent;
+
+            // Delete task by name
+            todoList.activeProject.deleteTaskByName(taskName);
+
+
+            console.log("Delete Clicked");
+            console.log(todoList.activeProject);
+
+            // Re-render tasks for the new active project
+            refreshTasks();
+        })
+
+    }
+
+    function attachListenerProject(button) {
+
+        const projectName = document.querySelector('.projectName');
+        button.addEventListener('click', () => {
+            console.log("Project clicked:", button.textContent);
+
+            // Set active project
+            todoList.activeProject = todoList.projects.find(
+                p => p.name === button.textContent
+            );
+
+            document.querySelectorAll('.project-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            projectName.textContent = button.textContent;
+
+            // Re-render tasks for the new active project
+            refreshTasks();
+        })
+    }
 
     return { render };
 })();
